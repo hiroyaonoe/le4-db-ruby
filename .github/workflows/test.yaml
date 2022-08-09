@@ -1,21 +1,21 @@
-name: test
+name: Run rspec, rubocop
 
-on: [push, pull_request]
-
-env:
-  RUBY_VERSION: 3.1.2
+on:
+  push:
+  pull_request:
 
 jobs:
   rspec:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
 
       - name: Cache node modules
@@ -26,19 +26,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Cache bundle gems
-        uses: actions/cache@v2
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gem-${{ env.cache-name }}-
-            ${{ runner.os }}-gem-
-            ${{ runner.os }}-
-
       - name: Bundler and gem install
         run: |
-          gem install bundler --no-document
+          gem install bundler
           bundle install --jobs 4 --retry 3 --path vendor/bundle
 
       - name: Yarn install
@@ -46,7 +36,23 @@ jobs:
 
       - name: Database create and migrate
         run: |
-          bundle exec rails db:setup RAILS_ENV=test
+          bundle exec rails db:create RAILS_ENV=test
+          bundle exec rails db:migrate RAILS_ENV=test
 
       - name: Run rspec
         run: bundle exec rspec
+
+  rubocop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Run rubocop
+        run: bundle exec rubocop

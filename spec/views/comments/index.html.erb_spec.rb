@@ -5,12 +5,12 @@ RSpec.describe "comments/index", type: :view do
     assign(:comments, [
       Comment.create!(
         content: "MyText",
-        thread_id: 2,
+        board_id: 2,
         user_id: 3
       ),
       Comment.create!(
         content: "MyText",
-        thread_id: 2,
+        board_id: 2,
         user_id: 3
       )
     ])

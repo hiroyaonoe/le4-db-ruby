@@ -4,7 +4,7 @@ RSpec.describe "comments/edit", type: :view do
   before(:each) do
     @comment = assign(:comment, Comment.create!(
       content: "MyText",
-      thread_id: 1,
+      board_id: 1,
       user_id: 1
     ))
   end
@@ -16,7 +16,7 @@ RSpec.describe "comments/edit", type: :view do
 
       assert_select "textarea[name=?]", "comment[content]"
 
-      assert_select "input[name=?]", "comment[thread_id]"
+      assert_select "input[name=?]", "comment[board_id]"
 
       assert_select "input[name=?]", "comment[user_id]"
     end

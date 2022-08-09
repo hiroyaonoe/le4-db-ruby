@@ -4,7 +4,7 @@ RSpec.describe "comments/show", type: :view do
   before(:each) do
     @comment = assign(:comment, Comment.create!(
       content: "MyText",
-      thread_id: 2,
+      board_id: 2,
       user_id: 3
     ))
   end

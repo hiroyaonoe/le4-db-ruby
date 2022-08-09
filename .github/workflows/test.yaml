@@ -15,7 +15,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-vdrsion: ${{ env.RUBY_VERSION }}
+          ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
 
       - name: Cache node modules

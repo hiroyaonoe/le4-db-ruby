@@ -1,12 +1,20 @@
 <div id="<%= dom_id board %>">
-  <p>
-    <strong>Title:</strong>
-    <%= board.title %>
-  </p>
+<h1><%= board.title %></h1>
+<h5>作成ユーザー: <%= link_to board.user.name, user_path(board.user_id) %></h5>
+<h5>作成日時: <%= board.created_at %></h5>
+<h5>カテゴリ: <a href="/search?category=<%= board.category_id %>"><%= board.category.name %></a></h5>
+<h5>タグ: TODO: forでの検索リンク付きタグ表示
+</h5>
 
-  <p>
-    <strong>User:</strong>
-    <%= board.user_id %>
-  </p>
+TODO: スレッド削除処理
+
+<% board.comments.each_with_index do |comment, i| %>
+<h4> <%= i+1 %> : <%= comment.user.name %> [ <%= comment.created_at %> ] </h4>
+TODO: コメント削除処理<br>
+<%= comment.content %>
+<% end %>
+
+<h3>コメントを投稿</h3>
+TODO: コメント投稿フォーム
 
 </div>

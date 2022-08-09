@@ -10,6 +10,7 @@ gem "webpacker"
 gem "jbuilder"
 gem "bootsnap", require: false
 gem "sassc-rails"
+gem "importmap-rails"
 
 group :development, :test do
   gem "sqlite3"

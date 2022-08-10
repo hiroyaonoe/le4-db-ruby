@@ -1,10 +1,11 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @board %>
+<h1><%= @board.title %></h1>
+<h5>作成ユーザー: <%= link_to @board.user.name, user_path(@board.user) %></h5>
+<h5>作成日時: <%= @board.created_at %></h5>
+<h5>カテゴリ: <%= @board.category.name %></h5>
 
-<div>
-  <%= link_to "Edit this board", edit_board_path(@board) %> |
-  <%= link_to "Back to boards", boards_path %>
-
-  <%= button_to "Destroy this board", @board, method: :delete %>
-</div>
+<% @board.comments.each_with_index do |comment, i| %>
+<h4><%= i+1 %>: <%= comment.user.name %> [ <%= comment.created_at %> ]</h4>
+<%= comment.content %>
+<% end %>

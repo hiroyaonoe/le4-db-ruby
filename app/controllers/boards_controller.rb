@@ -8,6 +8,7 @@ class BoardsController < ApplicationController
 
   # GET /boards/1 or /boards/1.json
   def show
+    @comment = Comment.new(board: @board)
   end
 
   # GET /boards/new

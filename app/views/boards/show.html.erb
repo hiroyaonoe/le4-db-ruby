@@ -9,3 +9,6 @@
 <h4><%= i+1 %>: <%= comment.user.name %> [ <%= comment.created_at %> ]</h4>
 <%= comment.content %>
 <% end %>
+
+<h3>コメントを投稿</h3>
+<%= render "comments/form", comment: @comment %>

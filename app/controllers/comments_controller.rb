@@ -1,8 +1,10 @@
 class CommentsController < ApplicationController
+  before_action :authenticate_user!, only: %i[ create ]
 
   # POST /comments
   def create
     @comment = Comment.new(comment_params)
+    @comment.user = current_user
     @board = @comment.board
     respond_to do |format|
       if @comment.save
@@ -15,6 +17,6 @@ class CommentsController < ApplicationController
 
   private
     def comment_params
-      params.require(:comment).permit(:content, :user_id, :board_id)
+      params.require(:comment).permit(:content, :board_id)
     end
 end

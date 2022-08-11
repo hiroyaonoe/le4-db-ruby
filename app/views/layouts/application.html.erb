@@ -19,6 +19,9 @@
 
     <%= yield %>
 
+    <br>
+    <% if !root? %>
     <%= link_to "ホームへ戻る", root_path%>
+    <% end %>
   </body>
 </html>

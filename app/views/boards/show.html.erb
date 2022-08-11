@@ -5,6 +5,14 @@
 <h5>作成日時: <%= @board.created_at %></h5>
 <h5>カテゴリ: <%= @board.category.name %></h5>
 
+<% if user_signed_in? %>
+  <% if current_user.has_board?(@board) %>
+    <%= button_to "スレッドを削除", @board, method: :delete %>
+  <% elsif current_user.admin? || current_user.owner? %>
+    <%= button_to "admin権限でスレッドを削除", @board, method: :delete %>
+  <% end %>
+<% end %>
+
 <% @board.comments.each_with_index do |comment, i| %>
 <h4><%= i+1 %>: <%= comment.user.name %> [ <%= comment.created_at %> ]</h4>
 <%= comment.content %>

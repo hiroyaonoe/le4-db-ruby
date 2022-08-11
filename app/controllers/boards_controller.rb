@@ -1,5 +1,5 @@
 class BoardsController < ApplicationController
-  before_action :authenticate_user!, only: %i[ create ]
+  before_action :authenticate_user!, only: %i[ create destroy ]
   before_action :set_board, only: %i[ show edit update destroy ]
 
   # GET /boards or /boards.json
@@ -9,7 +9,7 @@ class BoardsController < ApplicationController
 
   # GET /boards/1 or /boards/1.json
   def show
-    @comment = Comment.new(board: @board)
+    @comment = Comment.new
   end
 
   # GET /boards/new
@@ -48,13 +48,18 @@ class BoardsController < ApplicationController
     end
   end
 
-  # DELETE /boards/1 or /boards/1.json
+  # DELETE /boards/1
   def destroy
-    @board.destroy
-
-    respond_to do |format|
-      format.html { redirect_to boards_url, notice: "Board was successfully destroyed." }
-      format.json { head :no_content }
+    @comment = Comment.new
+    if (current_user.has_board? @board) || current_user.admin? || current_user.owner?
+      @board.destroy
+      respond_to do |format|
+        format.html { redirect_to boards_url, notice: "Board was successfully destroyed." }
+      end
+    else
+      respond_to do |format|
+        format.html { render :show, status: :unauthorized }
+      end
     end
   end
 

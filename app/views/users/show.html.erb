@@ -1,10 +1,13 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @user %>
+<h1><%= @user.name %></h1>
 
-<div>
-  <%= link_to "Edit this user", edit_user_path(@user) %> |
-  <%= link_to "Back to users", users_path %>
+TODO: ownerが権限を変更するフォーム<br/>
+権限: <%= @user.role %> <br/><br/>
+TODO: ユーザー削除ボタン
 
-  <%= button_to "Destroy this user", @user, method: :delete %>
-</div>
+<h3>作成したスレッド一覧</h3>
+<%= render "boards/index", boards: @boards %>
+
+<h3>投稿したコメント一覧</h3>
+<%= render "comments/index", boards: @boards %>

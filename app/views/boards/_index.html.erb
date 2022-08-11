@@ -1,7 +1,7 @@
 <table border="1">
     <tr>
         <th>タイトル</th>
-        <% if controller.controller_name != "users" %><th>作成ユーザー</th><% end %>
+        <% if !show_users_page? %><th>作成ユーザー</th><% end %>
         <th>作成日時</th>
         <th>コメント数</th>
         <th>カテゴリ</th>
@@ -11,7 +11,7 @@
     <% boards.each do |board| %>
     <tr>
         <td><%= link_to board.title, board %></td>
-        <% if controller.controller_name != "users" %><td><%= link_to board.user.name, board.user %></td><% end %>
+        <% if !show_users_page? %><td><%= link_to board.user.name, board.user %></td><% end %>
         <td><%= board.created_at %></a></td>
         <td>TODO: コメント数</td>
         <td><%= board.category.name %></a></td>

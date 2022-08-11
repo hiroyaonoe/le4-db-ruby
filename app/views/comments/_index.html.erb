@@ -1,0 +1,17 @@
+<table border="1">
+    <tr>
+        <th>コメント</th>
+        <% if !show_users_page? %><th>投稿ユーザー</th><% end %>
+        <th>投稿日時</th>
+        <th>スレッドタイトル</th>
+    </tr>
+
+    <% @comments.each do |comment| %>
+    <tr>
+        <td><%= comment.content %></td>
+        <% if !show_users_page? %><td><%= link_to comment.user.name, comment.user %></td><% end %>
+        <td><%= comment.created_at %></td>
+        <td><%= link_to comment.board.title, comment.board %> </td>
+    </tr>
+    <% end %>
+</table>

@@ -4,7 +4,7 @@ class Board < ApplicationRecord
   has_many :comments
   validates :title, presence: true
 
-  NUM_LATEST = 20
+  NUM_LATEST = 10
 
   def self.latest
     self.order(created_at: :desc).limit(NUM_LATEST)

@@ -11,5 +11,21 @@ member2 = User.create({ name: "Member2", email: "member2@example.com", password:
 admin1 = User.create({ name: "Admin2", email: "admin1@example.com", password: "password", role: :admin})
 owner1 = User.create({ name: "Owner2", email: "owner1@example.com", password: "password", role: :owner})
 category1 = Category.create({ name: "Category1" })
-board1 = Board.create({ title: "Board1", user: member1, category: category1 })
-Comment.create([{ content: "comment1", user: member1, board: board1 }, { content: "comment2", user: member1, board: board1 }, { content: "comment3", user: member2, board: board1 }])
+
+boards = []
+(1..10).each do |i|
+  boards.push({ title: "Board-#{i}-1", user: member1, category: category1 })
+  boards.push({ title: "Board-#{i}-1", user: member2, category: category1 })
+  boards.push({ title: "Board-#{i}-1", user: admin1, category: category1 })
+  boards.push({ title: "Board-#{i}-1", user: owner1, category: category1 })
+end
+Board.create(boards)
+
+board1 = Board.create({ title: "Board-main", user: member1, category: category1 })
+
+comments = []
+(1..5).each do |i|
+  comments.push({ content: "comment-#{i}-1", user: member1, board: board1 })
+  comments.push({ content: "comment-#{i}-2", user: member2, board: board1 })
+end
+Comment.create(comments)

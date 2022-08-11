@@ -1,7 +1,7 @@
 <%= form_with(model: board) do |form| %>
   <% if board.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(board.errors.count, "error") %> prohibited this board from being saved:</h2>
+      <h4><%= pluralize(board.errors.count, "error") %> prohibited this board from being saved:</h4>
 
       <ul>
         <% board.errors.each do |error| %>
@@ -12,21 +12,16 @@
   <% end %>
 
   <div>
-    <%= form.label :title, style: "display: block" %>
+    <%= form.label :title, "タイトル:" %>
     <%= form.text_field :title %>
   </div>
 
   <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
+    <%= form.label :title, "カテゴリ:" %>
+    <%= form.number_field :category_id %>
   </div>
 
   <div>
-    <%= form.label :category_id, style: "display: block" %>
-    <%= form.text_field :category_id %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+    <%= form.submit "作成" %>
   </div>
 <% end %>

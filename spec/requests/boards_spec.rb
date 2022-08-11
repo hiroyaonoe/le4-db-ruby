@@ -17,12 +17,12 @@ RSpec.describe "/boards", type: :request do
   # This should return the minimal set of attributes required to create a valid
   # Board. As you add validations to Board, be sure to
   # adjust the attributes here as well.
+  let(:user) { create(:user, :member) }
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    attributes_for(:board, user_id: user.id, category_id: create(:category).id)
   }
-
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    attributes_for(:board)
   }
 
   describe "GET /index" do
@@ -57,29 +57,54 @@ RSpec.describe "/boards", type: :request do
   end
 
   describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new Board" do
-        expect {
-          post boards_url, params: { board: valid_attributes }
-        }.to change(Board, :count).by(1)
+    let(:valid_attributes_without_user) {
+      attributes_for(:board, category_id: create(:category).id)
+    }
+
+    context "when logined" do
+      before(:each) do
+        sign_in user
       end
 
-      it "redirects to the created board" do
-        post boards_url, params: { board: valid_attributes }
-        expect(response).to redirect_to(board_url(Board.last))
+      context "with valid parameters" do
+        it "creates a new Board" do
+          expect {
+            post boards_url, params: { board: valid_attributes_without_user }
+          }.to change(Board, :count).by(1)
+        end
+
+        it "redirects to the created board" do
+          post boards_url, params: { board: valid_attributes_without_user }
+          expect(response).to redirect_to(board_url(Board.last))
+        end
+      end
+
+      context "with invalid parameters" do
+        it "does not create a new Board" do
+          expect {
+            post boards_url, params: { board: invalid_attributes }
+          }.to change(Board, :count).by(0)
+        end
+
+        it "renders a successful response (i.e. to display the 'new' template)" do
+          post boards_url, params: { board: invalid_attributes }
+          expect(response).to have_http_status :unprocessable_entity
+        end
       end
     end
 
-    context "with invalid parameters" do
-      it "does not create a new Board" do
-        expect {
-          post boards_url, params: { board: invalid_attributes }
-        }.to change(Board, :count).by(0)
-      end
+    context "when not logined" do
+      context "with valid parameters" do
+        it "does not create a new Board" do
+          expect {
+            post boards_url, params: { board: valid_attributes_without_user }
+          }.to change(Board, :count).by(0)
+        end
 
-      it "renders a successful response (i.e. to display the 'new' template)" do
-        post boards_url, params: { board: invalid_attributes }
-        expect(response).to be_successful
+        it "redirects to the login" do
+          post boards_url, params: { board: valid_attributes_without_user }
+          expect(response).to redirect_to(new_user_session_url)
+        end
       end
     end
   end
@@ -107,6 +132,7 @@ RSpec.describe "/boards", type: :request do
 
     context "with invalid parameters" do
       it "renders a successful response (i.e. to display the 'edit' template)" do
+        skip("Implement update")
         board = Board.create! valid_attributes
         patch board_url(board), params: { board: invalid_attributes }
         expect(response).to be_successful

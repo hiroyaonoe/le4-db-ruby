@@ -1,4 +1,5 @@
 class BoardsController < ApplicationController
+  before_action :authenticate_user!, only: %i[ create ]
   before_action :set_board, only: %i[ show edit update destroy ]
 
   # GET /boards or /boards.json
@@ -20,17 +21,16 @@ class BoardsController < ApplicationController
   def edit
   end
 
-  # POST /boards or /boards.json
+  # POST /boards
   def create
     @board = Board.new(board_params)
+    @board.user = current_user
 
     respond_to do |format|
       if @board.save
         format.html { redirect_to board_url(@board), notice: "Board was successfully created." }
-        format.json { render :show, status: :created, location: @board }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @board.errors, status: :unprocessable_entity }
+        format.html { render "static_pages/home", status: :unprocessable_entity, location: root_url }
       end
     end
   end
@@ -66,6 +66,6 @@ class BoardsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def board_params
-      params.require(:board).permit(:title, :user_id, :category_id)
+      params.require(:board).permit(:title, :category_id)
     end
 end

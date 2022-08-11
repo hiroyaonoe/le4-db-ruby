@@ -47,13 +47,13 @@ RSpec.describe "Comments", type: :request do
 
     context "when not logined" do
       context "with valid parameters" do
-        it "creates a new Comments" do
+        it "does not creates a new Comments" do
           expect {
             post board_comments_url(board), params: { comment: valid_attributes }
           }.to change(Comment, :count).by(0)
         end
 
-        it "redirects to the created comment" do
+        it "redirects to the login" do
           post board_comments_url(board), params: { comment: valid_attributes }
           expect(response).to redirect_to(new_user_session_url)
         end

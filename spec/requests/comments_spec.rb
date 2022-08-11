@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Comments", type: :request do
   
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :member) }
   let(:board) { create(:board) }
   let(:valid_attributes) {
     attributes_for(:comment)

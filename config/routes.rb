@@ -7,8 +7,9 @@ Rails.application.routes.draw do
   devise_scope :user do
     get 'login', to: 'users/sessions#new'
   end
-  resources :boards
-  resources :comments, only: [:create]
+  resources :boards do
+    resources :comments, only: [:create]
+  end
   resources :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -6,4 +6,5 @@ class User < ApplicationRecord
   has_many :boards
   has_many :comments
   validates :name, presence: true
+  enum :role, { member: 0, admin: 1, owner: 2 }
 end

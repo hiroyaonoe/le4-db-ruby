@@ -26,6 +26,8 @@ class BoardsController < ApplicationController
     @board = Board.new(board_params)
     @board.user = current_user
 
+    @boards = Board.latest
+
     respond_to do |format|
       if @board.save
         format.html { redirect_to board_url(@board), notice: "Board was successfully created." }

@@ -1,11 +1,13 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!, only: %i[ create ]
+  before_action :set_board, only: %i[ create ]
 
-  # POST /comments
+
+  # POST /boards/:board_id/comments
   def create
     @comment = Comment.new(comment_params)
     @comment.user = current_user
-    @board = @comment.board
+    @comment.board = @board
     respond_to do |format|
       if @comment.save
         format.html { redirect_to board_url(@board), notice: "Comment was successfully created." }
@@ -16,7 +18,11 @@ class CommentsController < ApplicationController
   end
 
   private
+    def set_board
+      @board = Board.find(params[:board_id])
+    end
+
     def comment_params
-      params.require(:comment).permit(:content, :board_id)
+      params.require(:comment).permit(:content)
     end
 end

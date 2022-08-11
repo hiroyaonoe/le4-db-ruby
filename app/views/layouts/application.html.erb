@@ -20,7 +20,7 @@
     <%= yield %>
 
     <br>
-    <% if !root? %>
+    <% if !root_page? %>
     <%= link_to "ホームへ戻る", root_path%>
     <% end %>
   </body>

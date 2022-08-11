@@ -18,10 +18,6 @@ RSpec.describe "Comments", type: :request do
         sign_in user
       end
 
-      # after(:each) do
-      #   sign_out :user
-      # end
-
       context "with valid parameters" do
         it "creates a new Comments" do
           expect {
@@ -37,14 +33,12 @@ RSpec.describe "Comments", type: :request do
 
       context "with invalid parameters" do
         it "does not create a new Comment" do
-          skip "until making content not null"
           expect {
             post board_comments_url(board), params: { comment: invalid_attributes }
           }.to change(Comment, :count).by(0)
         end
 
         it "return a 422 response" do
-          skip "until making content not null"
           post board_comments_url(board), params: { comment: invalid_attributes }
           expect(response).to have_http_status :unprocessable_entity
         end

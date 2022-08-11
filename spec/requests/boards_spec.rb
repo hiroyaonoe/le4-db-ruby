@@ -17,9 +17,12 @@ RSpec.describe "/boards", type: :request do
   # This should return the minimal set of attributes required to create a valid
   # Board. As you add validations to Board, be sure to
   # adjust the attributes here as well.
-  let(:user) { create(:user, :member) }
+  let(:member1) { create(:user, :member) }
+  let(:member2) { create(:user, :member) }
+  let(:admin1) { create(:user, :admin) }
+  let(:owner1) { create(:user, :owner) }
   let(:valid_attributes) {
-    attributes_for(:board, user_id: user.id, category_id: create(:category).id)
+    attributes_for(:board, user_id: member1.id, category_id: create(:category).id)
   }
   let(:invalid_attributes) {
     attributes_for(:board)
@@ -63,7 +66,7 @@ RSpec.describe "/boards", type: :request do
 
     context "when logined" do
       before(:each) do
-        sign_in user
+        sign_in member1
       end
 
       context "with valid parameters" do
@@ -141,17 +144,76 @@ RSpec.describe "/boards", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested board" do
-      board = Board.create! valid_attributes
-      expect {
+    context "when current user has the board" do
+      before(:each) do
+        sign_in member1
+      end
+      it "destroys the requested board" do
+        board = Board.create! valid_attributes
+        expect {
+          delete board_url(board)
+        }.to change(Board, :count).by(-1)
+      end
+
+      it "redirects to the boards list" do
+        board = Board.create! valid_attributes
         delete board_url(board)
-      }.to change(Board, :count).by(-1)
+        expect(response).to redirect_to(boards_url)
+      end
     end
 
-    it "redirects to the boards list" do
-      board = Board.create! valid_attributes
-      delete board_url(board)
-      expect(response).to redirect_to(boards_url)
+    context "when current user has not the board" do
+      before(:each) do
+        sign_in member2
+      end
+      it "does not destroy the requested board" do
+        board = Board.create! valid_attributes
+        expect {
+          delete board_url(board)
+        }.to change(Board, :count).by(0)
+      end
+
+      it "return a 401 response" do
+        board = Board.create! valid_attributes
+        delete board_url(board)
+        expect(response).to have_http_status :unauthorized
+      end
+    end
+
+    context "when current user is admin" do
+      before(:each) do
+        sign_in admin1
+      end
+      it "destroys the requested board" do
+        board = Board.create! valid_attributes
+        expect {
+          delete board_url(board)
+        }.to change(Board, :count).by(-1)
+      end
+
+      it "redirects to the boards list" do
+        board = Board.create! valid_attributes
+        delete board_url(board)
+        expect(response).to redirect_to(boards_url)
+      end
+    end
+
+    context "when current user is owner" do
+      before(:each) do
+        sign_in owner1
+      end
+      it "destroys the requested board" do
+        board = Board.create! valid_attributes
+        expect {
+          delete board_url(board)
+        }.to change(Board, :count).by(-1)
+      end
+
+      it "redirects to the boards list" do
+        board = Board.create! valid_attributes
+        delete board_url(board)
+        expect(response).to redirect_to(boards_url)
+      end
     end
   end
 end

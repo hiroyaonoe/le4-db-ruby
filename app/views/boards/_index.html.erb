@@ -8,7 +8,7 @@
         <th>タグ</th>
     </tr>
 
-    <% @boards.each do |board| %>
+    <% boards.each do |board| %>
     <tr>
         <td><%= link_to board.title, board %></td>
         <% if controller.controller_name != "users" %><td><%= board.user.name %></td><% end %>

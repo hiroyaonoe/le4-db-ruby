@@ -7,6 +7,6 @@ class Board < ApplicationRecord
   NUM_LATEST = 10
 
   def self.latest
-    self.order(created_at: :desc).limit(NUM_LATEST)
+    self.latest_order.limit(NUM_LATEST)
   end
 end

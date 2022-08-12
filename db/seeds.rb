@@ -15,9 +15,9 @@ category1 = Category.create({ name: "Category1" })
 boards = []
 (1..10).each do |i|
   boards.push({ title: "Board-#{i}-1", user: member1, category: category1 })
-  boards.push({ title: "Board-#{i}-1", user: member2, category: category1 })
-  boards.push({ title: "Board-#{i}-1", user: admin1, category: category1 })
-  boards.push({ title: "Board-#{i}-1", user: owner1, category: category1 })
+  boards.push({ title: "Board-#{i}-2", user: member2, category: category1 })
+  boards.push({ title: "Board-#{i}-3", user: admin1, category: category1 })
+  boards.push({ title: "Board-#{i}-4", user: owner1, category: category1 })
 end
 Board.create(boards)
 

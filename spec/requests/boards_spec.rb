@@ -28,33 +28,10 @@ RSpec.describe "/boards", type: :request do
     attributes_for(:board)
   }
 
-  describe "GET /index" do
-    it "renders a successful response" do
-      Board.create! valid_attributes
-      get boards_url
-      expect(response).to be_successful
-    end
-  end
-
   describe "GET /show" do
     it "renders a successful response" do
       board = Board.create! valid_attributes
       get board_url(board)
-      expect(response).to be_successful
-    end
-  end
-
-  describe "GET /new" do
-    it "renders a successful response" do
-      get new_board_url
-      expect(response).to be_successful
-    end
-  end
-
-  describe "GET /edit" do
-    it "renders a successful response" do
-      board = Board.create! valid_attributes
-      get edit_board_url(board)
       expect(response).to be_successful
     end
   end
@@ -108,37 +85,6 @@ RSpec.describe "/boards", type: :request do
           post boards_url, params: { board: valid_attributes_without_user }
           expect(response).to redirect_to(new_user_session_url)
         end
-      end
-    end
-  end
-
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested board" do
-        board = Board.create! valid_attributes
-        patch board_url(board), params: { board: new_attributes }
-        board.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "redirects to the board" do
-        board = Board.create! valid_attributes
-        patch board_url(board), params: { board: new_attributes }
-        board.reload
-        expect(response).to redirect_to(board_url(board))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
-        skip("Implement update")
-        board = Board.create! valid_attributes
-        patch board_url(board), params: { board: invalid_attributes }
-        expect(response).to be_successful
       end
     end
   end

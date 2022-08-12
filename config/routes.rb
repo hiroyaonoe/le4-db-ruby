@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     passwords: "users/passwords",
     registrations: "users/registrations"
   }
-  resources :boards do
+  resources :boards, only: [:show, :create, :destroy] do
     resources :comments, only: [:create]
   end
   resources :users

@@ -12,20 +12,28 @@ admin1 = User.create({ name: "Admin2", email: "admin1@example.com", password: "p
 owner1 = User.create({ name: "Owner2", email: "owner1@example.com", password: "password", role: :owner})
 category1 = Category.create({ name: "Category1" })
 
-boards = []
-(1..10).each do |i|
-  boards.push({ title: "Board-#{i}-1", user: member1, category: category1 })
-  boards.push({ title: "Board-#{i}-2", user: member2, category: category1 })
-  boards.push({ title: "Board-#{i}-3", user: admin1, category: category1 })
-  boards.push({ title: "Board-#{i}-4", user: owner1, category: category1 })
+boards = 10.times.flat_map do |i|
+  tag = Tag.create({ name: "tag-#{i}" })
+  [
+    { title: "Board-#{i}-1", user: member1, category: category1, tags: [ tag ] },
+    { title: "Board-#{i}-2", user: member2, category: category1, tags: [ tag ] },
+    { title: "Board-#{i}-3", user: admin1, category: category1, tags: [ tag ] },
+    { title: "Board-#{i}-4", user: owner1, category: category1, tags: [ tag ] }
+  ]
 end
 Board.create(boards)
 
 board1 = Board.create({ title: "Board-main", user: member1, category: category1 })
 
-comments = []
-(1..5).each do |i|
-  comments.push({ content: "comment-#{i}-1", user: member1, board: board1 })
-  comments.push({ content: "comment-#{i}-2", user: member2, board: board1 })
+comments = 5.times.flat_map do |i|
+  [
+    { content: "comment-#{i}-1", user: member1, board: board1 },
+    { content: "comment-#{i}-2", user: member2, board: board1 }
+  ]
 end
 Comment.create(comments)
+
+tags = 3.times.map do |i|
+  Tag.find_or_create_by(name: "tag-#{i}")
+end
+board1.update(tags: tags)

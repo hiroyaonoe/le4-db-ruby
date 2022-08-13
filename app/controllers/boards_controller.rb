@@ -10,10 +10,12 @@ class BoardsController < ApplicationController
   # POST /boards
   def create
     @board = Board.new(board_params)
-    @board.user = current_user
+    @board.user= current_user
+    @board.tags= tag_names.map do |name|
+      Tag.find_or_create_by(name: name)
+    end
 
     @boards = Board.latest
-
     respond_to do |format|
       if @board.save
         format.html { redirect_to board_url(@board), notice: "Board was successfully created." }
@@ -48,5 +50,9 @@ class BoardsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def board_params
       params.require(:board).permit(:title, :category_id)
+    end
+
+    def tag_names
+      params.require(:board)[:tag_text].split
     end
 end

@@ -17,8 +17,13 @@
   </div>
 
   <div>
-    <%= form.label :title, "カテゴリ:" %>
+    <%= form.label :category_id, "カテゴリ:" %>
     <%= form.select :category_id, categories, { prompt: "選択"} %>
+  </div>
+
+  <div>
+    <%= form.label :tag_text, "タグ:" %>
+    <%= form.text_field :tag_text, placeholder: "空白区切りで複数指定" %>
   </div>
 
   <div>

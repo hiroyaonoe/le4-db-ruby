@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :comment do
-    content {"Comment1"}
+    sequence(:content) { |n| "Comment#{n}" }
     user
     board
   end

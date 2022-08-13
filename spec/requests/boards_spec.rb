@@ -27,9 +27,12 @@ RSpec.describe "/boards", type: :request do
   let(:invalid_attributes) {
     attributes_for(:board)
   }
+  let(:tag_text) {
+    [create(:tag).name, create(:tag).name, create(:tag).name].join(" ")
+  }
 
   describe "GET /show" do
-    it "renders a successful response" do
+    it "renders a successful respoboard_nse" do
       board = Board.create! valid_attributes
       get board_url(board)
       expect(response).to be_successful
@@ -37,37 +40,48 @@ RSpec.describe "/boards", type: :request do
   end
 
   describe "POST /create" do
-    let(:valid_attributes_without_user) {
-      attributes_for(:board, category_id: create(:category).id)
-    }
-
     context "when logined" do
       before(:each) do
         sign_in member1
       end
 
       context "with valid parameters" do
-        it "creates a new Board" do
-          expect {
-            post boards_url, params: { board: valid_attributes_without_user }
-          }.to change(Board, :count).by(1)
+        context "with existing tags" do
+          it "creates a new Board" do
+            expect {
+              post boards_url, params: { board: valid_attributes.merge(tag_text: tag_text) }
+            }.to change(Board, :count).by(1)
+          end
+
+          it "redirects to the created board" do
+            post boards_url, params: { board: valid_attributes.merge(tag_text: tag_text) }
+            expect(response).to redirect_to(board_url(Board.last))
+          end
         end
 
-        it "redirects to the created board" do
-          post boards_url, params: { board: valid_attributes_without_user }
-          expect(response).to redirect_to(board_url(Board.last))
+        context "with new tags" do
+          it "creates a new Board" do
+            expect {
+              post boards_url, params: { board: valid_attributes.merge(tag_text: "new-tag1 new-tag2") }
+            }.to change(Board, :count).by(1)
+          end
+
+          it "redirects to the created board" do
+            post boards_url, params: { board: valid_attributes.merge(tag_text: "new-tag1 new-tag2") }
+            expect(response).to redirect_to(board_url(Board.last))
+          end
         end
       end
 
       context "with invalid parameters" do
         it "does not create a new Board" do
           expect {
-            post boards_url, params: { board: invalid_attributes }
+            post boards_url, params: { board: invalid_attributes.merge(tag_text: tag_text) }
           }.to change(Board, :count).by(0)
         end
 
         it "renders a successful response (i.e. to display the 'new' template)" do
-          post boards_url, params: { board: invalid_attributes }
+          post boards_url, params: { board: invalid_attributes.merge(tag_text: tag_text) }
           expect(response).to have_http_status :unprocessable_entity
         end
       end
@@ -77,12 +91,12 @@ RSpec.describe "/boards", type: :request do
       context "with valid parameters" do
         it "does not create a new Board" do
           expect {
-            post boards_url, params: { board: valid_attributes_without_user }
+            post boards_url, params: { board: valid_attributes.merge(tag_text: tag_text) }
           }.to change(Board, :count).by(0)
         end
 
         it "redirects to the login" do
-          post boards_url, params: { board: valid_attributes_without_user }
+          post boards_url, params: { board: valid_attributes.merge(tag_text: tag_text) }
           expect(response).to redirect_to(new_user_session_url)
         end
       end
@@ -94,14 +108,14 @@ RSpec.describe "/boards", type: :request do
       before(:each) do
         sign_in member1
       end
-      it "destroys the requested board" do
+      it "destroys the requested boaboard_rd" do
         board = Board.create! valid_attributes
         expect {
           delete board_url(board)
         }.to change(Board, :count).by(-1)
       end
 
-      it "redirects to the boards list" do
+      it "redirects to the boards liboard_st" do
         board = Board.create! valid_attributes
         delete board_url(board)
         expect(response).to redirect_to(boards_url)

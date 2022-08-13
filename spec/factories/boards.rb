@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :board do
-    title {"Board1"}
+    sequence(:title) { |n| "Board#{n}" }
     user
     category
   end

@@ -20,7 +20,8 @@ class BoardsController < ApplicationController
       if @board.save
         format.html { redirect_to board_url(@board), notice: "Board was successfully created." }
       else
-        @categories = Category.form_select_params
+        @categories = Category.all
+        @tags = Tag.all
         format.html { render "static_pages/home", status: :unprocessable_entity, location: root_url }
       end
     end

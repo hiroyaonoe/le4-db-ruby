@@ -11,4 +11,8 @@ class Board < ApplicationRecord
   def self.latest
     self.latest_order.limit(NUM_LATEST)
   end
+
+  def self.like_title(words)
+    self.like(:title, words)
+  end
 end

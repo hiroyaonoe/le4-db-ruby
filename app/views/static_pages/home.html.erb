@@ -3,3 +3,6 @@
 
 <h1>最新のスレッド一覧</h1>
 <%= render "boards/index", boards: @boards, tags: @tags %>
+
+<h1>スレッド・コメントを検索</h1>
+<%= render "search/form", categories: @categories, tags: @tags %>

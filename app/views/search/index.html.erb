@@ -1,0 +1,8 @@
+<h2>スレッド・コメントを検索</h2>
+<%= render "search/form", categories: @categories, tags: @tags %>
+
+<h2>検索結果</h2>
+<h3>スレッド</h3>
+<%= render "boards/index", boards: @boards %>
+<h3>コメント</h3>
+<%= render "comments/index", comments: @comments %>

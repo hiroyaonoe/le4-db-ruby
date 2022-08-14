@@ -3,7 +3,7 @@ class SearchController < ApplicationController
   # POST /search
   def index
     @boards = Board.find_category(category_id).like_title(words)
-    @comments = Comment.like_content(words)
+    @comments = Comment.find_category(category_id).like_content(words)
     @categories = Category.all
   end
 

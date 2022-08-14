@@ -133,7 +133,7 @@ RSpec.describe "Searches", type: :request do
             expect(response.body).to include "cdefg"
             expect(response.body).not_to include "efghi"
             expect(response.body).not_to include "ghijk"
-            expect(response.body).to include "ddddd"
+            expect(response.body).not_to include "ddddd"
           end
 
           it "renders a successful response" do
@@ -199,7 +199,7 @@ RSpec.describe "Searches", type: :request do
             expect(response.body).to include "cdefg"
             expect(response.body).to include "efghi"
             expect(response.body).to include "ghijk"
-            expect(response.body).to include "ddddd"
+            expect(response.body).not_to include "ddddd"
           end
 
           it "renders a successful response" do

@@ -2,8 +2,9 @@ class SearchController < ApplicationController
   
   # POST /search
   def index
-    @boards = Board.where_tags(tag_ids).where_category(category_id).like_title(words)
-    @comments = Comment.where_category(category_id).like_content(words)
+    boards_where_tags_and_category = Board.where_tags(tag_ids).where_category(category_id)
+    @boards = boards_where_tags_and_category.like_title(words)
+    @comments = Comment.where(board: boards_where_tags_and_category).like_content(words)
     @categories = Category.all
     @tags = Tag.all
   end

@@ -7,8 +7,8 @@ class Comment < ApplicationRecord
     self.like(:content, words)
   end
 
-  def self.find_category(category_id)
-    boards = Board.find_category(category_id)
+  def self.where_category(category_id)
+    boards = Board.where_category(category_id)
     self.where(board: boards)
   end
 end

@@ -17,7 +17,7 @@ class Board < ApplicationRecord
     self.like(:title, words)
   end
 
-  def self.find_category(category_id)
+  def self.where_category(category_id)
     if (category_id == ALL) || Category.where(id: category_id).empty?
       self.all
     else

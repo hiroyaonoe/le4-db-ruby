@@ -196,7 +196,7 @@ RSpec.describe "Searches", type: :request do
 
       context "with one word" do
         context "with category" do
-          it "hits correct boards" do
+          it "hits correct comments" do
             get search_index_url, params: { words: "d", category_id: category1.id }
             expect(response.body).to include "abcde"
             expect(response.body).to include "cdefg"
@@ -212,7 +212,7 @@ RSpec.describe "Searches", type: :request do
         end
 
         context "with no category" do
-          it "hits correct boards" do
+          it "hits correct comments" do
             get search_index_url, params: { words: "d" }
             expect(response.body).to include "abcde"
             expect(response.body).to include "cdefg"
@@ -229,7 +229,7 @@ RSpec.describe "Searches", type: :request do
       end
 
       context "with two words" do
-        it "hits correct boards" do
+        it "hits correct comments" do
           get search_index_url, params: { words: "d a" }
           expect(response.body).to include "abcde"
           expect(response.body).not_to include "cdefg"
@@ -245,7 +245,7 @@ RSpec.describe "Searches", type: :request do
       end
 
       context "with blank word" do
-        it "hits correct boards" do
+        it "hits correct comments" do
           get search_index_url, params: { words: " " }
           expect(response.body).to include "abcde"
           expect(response.body).to include "cdefg"
@@ -262,7 +262,7 @@ RSpec.describe "Searches", type: :request do
 
       context "with no words" do
         context "with category" do
-          it "hits correct boards" do
+          it "hits correct comments" do
             get search_index_url, params: { category_id: category1.id }
             expect(response.body).to include "abcde"
             expect(response.body).to include "cdefg"
@@ -278,7 +278,7 @@ RSpec.describe "Searches", type: :request do
         end
 
         context "with blank category" do
-          it "hits correct boards" do
+          it "hits correct comments" do
             get search_index_url, params: { category_id: "" }
             expect(response.body).to include "abcde"
             expect(response.body).to include "cdefg"
@@ -294,7 +294,7 @@ RSpec.describe "Searches", type: :request do
         end
 
         context "with no category" do
-          it "hits correct boards" do
+          it "hits correct comments" do
             get search_index_url
             expect(response.body).to include "abcde"
             expect(response.body).to include "cdefg"

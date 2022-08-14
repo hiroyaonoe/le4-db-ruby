@@ -2,9 +2,10 @@ class SearchController < ApplicationController
   
   # POST /search
   def index
-    @boards = Board.find_category(category_id).like_title(words)
+    @boards = Board.where_tags(tag_ids).find_category(category_id).like_title(words)
     @comments = Comment.find_category(category_id).like_content(words)
     @categories = Category.all
+    @tags = Tag.all
   end
 
   private
@@ -21,6 +22,16 @@ class SearchController < ApplicationController
         params[:category_id]
       else
         Board::ALL
+      end
+    end
+    
+    def tag_ids
+      if params.has_key? :tag_ids
+        array = params[:tag_ids]
+        array.delete("")
+        array
+      else
+        []
       end
     end
 end

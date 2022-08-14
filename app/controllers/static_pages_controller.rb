@@ -3,5 +3,6 @@ class StaticPagesController < ApplicationController
     @board = Board.new
     @boards = Board.latest
     @categories = Category.all
+    @tags = Tag.all
   end
 end

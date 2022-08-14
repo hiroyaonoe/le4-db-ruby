@@ -24,4 +24,12 @@ class Board < ApplicationRecord
       self.where(category_id: category_id)
     end
   end
+
+  def self.where_tags(tag_ids)
+    query = self
+    tag_ids.each do |tag_id|
+      query = query.where(id: BoardTag.where(tag_id: tag_id).select(:board_id))
+    end
+    query
+  end
 end

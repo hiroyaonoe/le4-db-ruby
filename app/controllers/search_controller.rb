@@ -4,7 +4,7 @@ class SearchController < ApplicationController
   def index
     @boards = Board.find_category(category_id).like_title(words)
     @comments = Comment.like_content(words)
-    @categories = Category.form_select_params
+    @categories = Category.all
   end
 
   private

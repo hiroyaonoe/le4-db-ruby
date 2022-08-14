@@ -18,7 +18,7 @@
 
   <div>
     <%= form.label :category_id, "カテゴリ:" %>
-    <%= form.select :category_id, categories, { prompt: "選択"} %>
+    <%= form.collection_select :category_id, categories, :id, :name, prompt: "選択" %>
   </div>
 
   <div>

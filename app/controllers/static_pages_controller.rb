@@ -2,6 +2,7 @@ class StaticPagesController < ApplicationController
   def home
     @board = Board.new
     @boards = Board.latest
-    @categories = Category.form_select_params
+    @categories = Category.all
+    @tags = Tag.all
   end
 end

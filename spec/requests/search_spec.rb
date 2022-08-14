@@ -208,6 +208,22 @@ RSpec.describe "Searches", type: :request do
           end
         end
 
+        context "with blank category" do
+          it "hits correct boards" do
+            get search_index_url, params: { category_id: "" }
+            expect(response.body).to include "abcde"
+            expect(response.body).to include "cdefg"
+            expect(response.body).to include "efghi"
+            expect(response.body).to include "ghijk"
+            expect(response.body).to include "ddddd"
+          end
+    
+          it "renders a successful response" do
+            get search_index_url
+            expect(response).to be_successful
+          end
+        end
+
         context "with no category" do
           it "hits correct boards" do
             get search_index_url

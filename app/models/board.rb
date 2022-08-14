@@ -18,7 +18,7 @@ class Board < ApplicationRecord
   end
 
   def self.find_category(category_id)
-    if category_id == ALL
+    if (category_id == ALL) || Category.where(id: category_id).empty?
       self.all
     else
       self.where(category_id: category_id)

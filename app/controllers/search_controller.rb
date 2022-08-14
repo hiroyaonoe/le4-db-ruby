@@ -2,7 +2,7 @@ class SearchController < ApplicationController
   
   # POST /search
   def index
-    @boards = Board.like_title(words)
+    @boards = Board.find_category(category_id).like_title(words)
     @comments = Comment.like_content(words)
     @categories = Category.form_select_params
   end
@@ -13,6 +13,14 @@ class SearchController < ApplicationController
         params[:words].split
       else
         []
+      end
+    end
+
+    def category_id
+      if params.has_key? :category_id
+        params[:category_id]
+      else
+        Board::ALL
       end
     end
 end

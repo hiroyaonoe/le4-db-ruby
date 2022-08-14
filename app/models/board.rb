@@ -7,6 +7,7 @@ class Board < ApplicationRecord
   validates :title, presence: true
 
   NUM_LATEST = 10
+  ALL = :all
 
   def self.latest
     self.latest_order.limit(NUM_LATEST)
@@ -14,5 +15,13 @@ class Board < ApplicationRecord
 
   def self.like_title(words)
     self.like(:title, words)
+  end
+
+  def self.find_category(category_id)
+    if category_id == ALL
+      self.all
+    else
+      self.where(category_id: category_id)
+    end
   end
 end

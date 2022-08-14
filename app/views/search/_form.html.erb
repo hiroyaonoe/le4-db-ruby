@@ -1,9 +1,13 @@
-<%= form_with url: search_index_url, method: :get, local: true do |form| %>
+<%= form_with url: search_index_url, method: :get do |form| %>
   <div>
     <%= form.label :words, "検索ワード(空白区切り)" %>
     <%= form.text_field :words %>
 
   <div>
-    <%= form.submit "検索" %>
+    <%= form.select :category_id, categories, { prompt: "カテゴリ" } %>
+  </div>
+
+  <div>
+    <%= form.submit "検索", name: nil %>
   </div>
 <% end %>

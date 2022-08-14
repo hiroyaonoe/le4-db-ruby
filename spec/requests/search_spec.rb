@@ -9,20 +9,40 @@ RSpec.describe "Searches", type: :request do
       create(:board, title: "cdefg", user_id: member1.id, category_id: category1.id)
       create(:board, title: "efghi", user_id: member1.id, category_id: category1.id)
       create(:board, title: "ghijk", user_id: member1.id, category_id: category1.id)
+      create(:board, title: "ddddd", user_id: member1.id, category_id: create(:category).id)
     end
 
     context "with one word" do
-      it "hits correct boards" do
-        get search_index_url, params: { words: "d" }
-        expect(response.body).to include "abcde"
-        expect(response.body).to include "cdefg"
-        expect(response.body).not_to include "efghi"
-        expect(response.body).not_to include "ghijk"
+      context "with category" do
+        it "hits correct boards" do
+          get search_index_url, params: { words: "d", category_id: category1.id }
+          expect(response.body).to include "abcde"
+          expect(response.body).to include "cdefg"
+          expect(response.body).not_to include "efghi"
+          expect(response.body).not_to include "ghijk"
+          expect(response.body).not_to include "ddddd"
+        end
+
+        it "renders a successful response" do
+          get search_index_url, params: { words: "d", category_id: category1.id }
+          expect(response).to be_successful
+        end
       end
 
-      it "renders a successful response" do
-        get search_index_url, params: { words: "d" }
-        expect(response).to be_successful
+      context "with no category" do
+        it "hits correct boards" do
+          get search_index_url, params: { words: "d" }
+          expect(response.body).to include "abcde"
+          expect(response.body).to include "cdefg"
+          expect(response.body).not_to include "efghi"
+          expect(response.body).not_to include "ghijk"
+          expect(response.body).to include "ddddd"
+        end
+
+        it "renders a successful response" do
+          get search_index_url, params: { words: "d" }
+          expect(response).to be_successful
+        end
       end
     end
 
@@ -33,6 +53,7 @@ RSpec.describe "Searches", type: :request do
         expect(response.body).not_to include "cdefg"
         expect(response.body).not_to include "efghi"
         expect(response.body).not_to include "ghijk"
+        expect(response.body).not_to include "ddddd"
       end
 
       it "renders a successful response" do
@@ -48,6 +69,7 @@ RSpec.describe "Searches", type: :request do
         expect(response.body).to include "cdefg"
         expect(response.body).to include "efghi"
         expect(response.body).to include "ghijk"
+        expect(response.body).to include "ddddd"
       end
 
       it "renders a successful response" do
@@ -57,17 +79,36 @@ RSpec.describe "Searches", type: :request do
     end
 
     context "with no words" do
-      it "hits correct boards" do
-        get search_index_url
-        expect(response.body).to include "abcde"
-        expect(response.body).to include "cdefg"
-        expect(response.body).to include "efghi"
-        expect(response.body).to include "ghijk"
+      context "with category" do
+        it "hits correct boards" do
+          get search_index_url, params: { category_id: category1.id }
+          expect(response.body).to include "abcde"
+          expect(response.body).to include "cdefg"
+          expect(response.body).to include "efghi"
+          expect(response.body).to include "ghijk"
+          expect(response.body).not_to include "ddddd"
+        end
+
+        it "renders a successful response" do
+          get search_index_url, params: { category_id: category1.id }
+          expect(response).to be_successful
+        end
       end
 
-      it "renders a successful response" do
-        get search_index_url
-        expect(response).to be_successful
+      context "with no category" do
+        it "hits correct boards" do
+          get search_index_url
+          expect(response.body).to include "abcde"
+          expect(response.body).to include "cdefg"
+          expect(response.body).to include "efghi"
+          expect(response.body).to include "ghijk"
+          expect(response.body).to include "ddddd"
+        end
+  
+        it "renders a successful response" do
+          get search_index_url
+          expect(response).to be_successful
+        end
       end
     end
   end
